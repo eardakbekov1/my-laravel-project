@@ -15,9 +15,9 @@ class CreateIdCardsTable extends Migration
     {
         Schema::create('id_cards', function (Blueprint $table) {
             $table->id();
-            $table->integer('role_id');
-            $table->integer('user_id');
-            $table->integer('condition_id')->nullable();
+            $table->unsignedBigInteger('role_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('condition_id')->nullable();
             $table->timestamps();
         });
     }

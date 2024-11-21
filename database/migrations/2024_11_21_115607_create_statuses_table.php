@@ -17,7 +17,7 @@ class CreateStatusesTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('condition_id')->nullable();
+            $table->unsignedBigInteger('condition_id')->nullable();
             $table->timestamps();
         });
     }
