@@ -9,6 +9,8 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'description', 'condition_id', 'status_id'];
+
     public function tasks()
     {
         return $this->belongsToMany(Task::class, 'project_task');

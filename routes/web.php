@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ConditionController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\IdCardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +23,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource('tasks', TaskController::class);
+Route::resource('users', UserController::class);
+Route::resource('roles', RoleController::class);
+Route::resource('projects', ProjectController::class);
+Route::resource('conditions', ConditionController::class);
+Route::resource('statuses', StatusController::class);
+Route::resource('id_cards', IdCardController::class);

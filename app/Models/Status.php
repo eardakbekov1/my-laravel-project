@@ -9,6 +9,13 @@ class Status extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'description',
+        'condition_id',
+    ];
+
+
     public function condition()
     {
         return $this->belongsTo(Condition::class);

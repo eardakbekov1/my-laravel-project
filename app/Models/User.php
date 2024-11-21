@@ -33,9 +33,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'username',
         'email',
         'password',
+        'condition_id',  // Добавьте это поле
     ];
 
     /**

@@ -26,3 +26,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+import Pusher from 'pusher-js';
+
+// Настроим Pusher
+window.Pusher = Pusher;
+Pusher.logToConsole = true;
+
+window.pusher = new Pusher('your-app-key', {
+    cluster: 'your-cluster',
+    encrypted: true
+});

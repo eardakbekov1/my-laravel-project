@@ -9,6 +9,15 @@ class Task extends Model
 {
     use HasFactory;
 
+    // Разрешаем массовое присваивание для этих полей
+    protected $fillable = [
+        'name',
+        'description',
+        'status_id',
+        'user_id',
+        'condition_id',
+    ];
+
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'project_task');
