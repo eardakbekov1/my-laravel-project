@@ -31,9 +31,16 @@ import Pusher from 'pusher-js';
 
 // Настроим Pusher
 window.Pusher = Pusher;
-Pusher.logToConsole = true;
 
-window.pusher = new Pusher('your-app-key', {
-    cluster: 'your-cluster',
+const pusher = new Pusher('your_app_key', {
+    cluster: 'your_app_cluster',
     encrypted: true
 });
+
+const channel = pusher.subscribe('tasks');
+
+channel.bind('TaskCreated', function(data) {
+    alert('Новая задача создана: ' + data.task.name);
+    // Здесь можно обновить UI, например, добавить задачу в таблицу
+});
+
