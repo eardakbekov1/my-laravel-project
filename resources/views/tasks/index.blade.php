@@ -74,12 +74,4 @@
             toastr.success('"Toastr" работает.', 'Успех!');
         });
     </script>
-
-    <script>
-        // Подписка на канал "tasks"
-        window.Echo.channel('tasks')
-            .listen('TaskCreated', (data) => {
-                console.log('Новое событие TaskCreated:', data);
-            });
-    </script>
 @endsection

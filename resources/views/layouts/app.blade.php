@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laravel Task Manager</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <script src="{{ mix('js/app.js') }}" defer></script>
-
 
     <!-- toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+
     <script>
         toastr.options = {
             positionClass: 'toast-bottom-right',
@@ -18,25 +20,14 @@
         };
     </script>
 
-
-    <!-- Select2 CSS (для работы с выпадающими списками с возможностью поиска) -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
-    <!-- Bootstrap Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
-
-    <!-- Подключение Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
     <!-- Подключение jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Подключение Select2 JS -->
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/laravel-echo/dist/echo.js"></script>
-
 </head>
 <body>
 <div id="app">
@@ -79,24 +70,32 @@
     </div>
 </div>
 
-<!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<!-- Select2 JS (для работы с выпадающими списками с возможностью поиска) -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+@yield('scripts')
 
 <script>
     $(document).ready(function() {
+        // Инициализация Select2 с возможностью ввода текста
         $('.select2').select2({
             tags: true,  // Позволяет вводить текст
             placeholder: "Выберите", // Подсказка
             allowClear: true  // Возможность очистить выбор
         });
+
+        window.Echo.channel('tasks')
+            .listen('TaskCreated', (data) => {
+                console.log('Новое событие TaskCreated:', data);
+
+                // Отправляем данные на сервер
+                axios.post('/log-event', data)
+                    .then(response => {
+                        console.log('Данные отправлены в лог на сервере');
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при отправке данных в лог:', error);
+                    });
+            });
     });
 </script>
 
-
-<script src="{{ asset('js/app.js') }}"></script>
-@yield('scripts')
 </body>
 </html>
