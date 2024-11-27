@@ -30,3 +30,11 @@ Route::resource('projects', ProjectController::class);
 Route::resource('conditions', ConditionController::class);
 Route::resource('statuses', StatusController::class);
 Route::resource('id_cards', IdCardController::class);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
+Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
+Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage']);

@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Status;
 use App\Models\Condition;
 use Illuminate\Http\Request;
+use App\Models\Task;
 
 class ProjectController extends Controller
 {
@@ -16,7 +17,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with(['status', 'condition'])->get(); // Загрузка связанных статусов и условий
+        // Получаем все проекты с их связанными задачами
+        $projects = Project::with('tasks')->get();
+
+        // Передаем проекты в представление
         return view('projects.index', compact('projects'));
     }
 
@@ -29,11 +33,13 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $conditions = Condition::all();  // Получаем все состояния
-        $statuses = Status::all();       // Получаем все статусы
+        $statuses = Status::all(); // Если есть выбор статусов
+        $conditions = Condition::all(); // Если есть выбор состояний
+        $tasks = Task::all(); // Задачи для выбора
 
-        return view('projects.create', compact('conditions', 'statuses'));  // Передаем данные в представление
+        return view('projects.create', compact('statuses', 'conditions', 'tasks'));
     }
+
 
 
     /**
@@ -44,23 +50,30 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        // Валидация данных
+        // Валидация
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status_id' => 'nullable|exists:statuses,id',
-            'condition_id' => 'nullable|exists:conditions,id',
+            'status_id' => 'nullable|exists:statuses,id', // Валидируем статус
+            'condition_id' => 'nullable|exists:conditions,id', // Валидируем состояние
+            'tasks' => 'nullable|array', // Поле для задач
+            'tasks.*' => 'exists:tasks,id', // Каждое значение — ID существующей задачи
         ]);
 
-        // Создание проекта
+        // Создаем проект
         $project = Project::create([
             'name' => $request->name,
             'description' => $request->description,
-            'status_id' => $request->status_id,
-            'condition_id' => $request->condition_id,
+            'status_id' => $request->status_id, // Добавляем статус
+            'condition_id' => $request->condition_id, // Добавляем состояние
         ]);
 
-        return redirect()->route('projects.index')->with('success', 'Проект создан успешно!');
+        // Привязываем задачи к проекту
+        if ($request->has('tasks')) {
+            $project->tasks()->sync($request->tasks); // Привязывает переданные задачи
+        }
+
+        return redirect()->route('projects.index')->with('success', 'Проект успешно создан');
     }
 
     /**
@@ -71,10 +84,18 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
+        // Получаем проект по ID
         $project = Project::findOrFail($id);
+
+        // Получаем все задачи
+        $tasks = Task::all();
+
+        // Получаем статусы и условия
         $statuses = Status::all();
         $conditions = Condition::all();
-        return view('projects.edit', compact('project', 'statuses', 'conditions'));
+
+        // Передаем данные в представление
+        return view('projects.edit', compact('project', 'tasks', 'statuses', 'conditions'));
     }
 
     /**
@@ -86,22 +107,26 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Валидация данных
-        $request->validate([
+        // Найти проект или вернуть 404
+        $project = Project::findOrFail($id);
+
+        // Валидировать данные
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status_id' => 'nullable|exists:statuses,id',
             'condition_id' => 'nullable|exists:conditions,id',
+            'tasks' => 'nullable|array',
+            'tasks.*' => 'exists:tasks,id',
         ]);
 
-        $project = Project::findOrFail($id);
-        $project->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'status_id' => $request->status_id,
-            'condition_id' => $request->condition_id,
-        ]);
+        // Обновить данные проекта
+        $project->update($validated);
 
+        // Синхронизировать связи с задачами
+        $project->tasks()->sync($validated['tasks'] ?? []);
+
+        // Перенаправить с сообщением об успехе
         return redirect()->route('projects.index')->with('success', 'Проект обновлен успешно!');
     }
 

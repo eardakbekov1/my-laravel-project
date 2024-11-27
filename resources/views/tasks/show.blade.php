@@ -8,7 +8,7 @@
         <li><strong>Описание:</strong> {{ $task->description }}</li>
         <li><strong>Статус:</strong> {{ $task->status->name ?? 'Не задан' }}</li>
         <li><strong>Исполнитель:</strong> {{ $task->user->name ?? 'Не назначен' }}</li>
-        <li><strong>Статус:</strong> {{ $task->condition->name ?? 'Не задано' }}</li>
+        <li><strong>Состояние:</strong> {{ $task->condition->name ?? 'Не задано' }}</li>
         <li><strong>Дата создания:</strong> {{ $task->created_at }}</li>
         <li><strong>Дата обновления:</strong> {{ $task->updated_at }}</li>
     </ul>

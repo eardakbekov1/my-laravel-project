@@ -36,7 +36,11 @@
             <label for="condition_id" class="form-label">Состояние</label>
             <select class="form-select" id="condition_id" name="condition_id">
                 <option value="">Не выбрано</option>
-                <!-- Здесь будут перечислены возможные условия из базы данных -->
+                @foreach ($conditions as $condition)
+                    <option value="{{ $condition->id }}" {{ old('condition_id') == $condition->id ? 'selected' : '' }}>
+                        {{ $condition->name }}
+                    </option>
+                @endforeach
             </select>
         </div>
 

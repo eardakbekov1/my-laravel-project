@@ -18,11 +18,11 @@
 
             <div class="form-group">
                 <label for="condition_id">Состояние</label>
-                <select name="condition_id" id="condition_id" class="form-control">
+                <select name="condition_id" id="condition_id" class="form-control select2">
                     <option value="">Выберите состояние</option>
                     @foreach ($conditions as $condition)
                         <option value="{{ $condition->id }}" {{ old('condition_id') == $condition->id ? 'selected' : '' }}>
-                            {{ $condition->name }}  <!-- Здесь выводится название состояния -->
+                            {{ $condition->name }}
                         </option>
                     @endforeach
                 </select>
@@ -30,15 +30,28 @@
 
             <div class="form-group">
                 <label for="status_id">Статус</label>
-                <select name="status_id" id="status_id" class="form-control">
+                <select name="status_id" id="status_id" class="form-control select2">
                     <option value="">Выберите статус</option>
                     @foreach ($statuses as $status)
                         <option value="{{ $status->id }}" {{ old('status_id') == $status->id ? 'selected' : '' }}>
-                            {{ $status->name }}  <!-- Здесь выводится название статуса -->
+                            {{ $status->name }}
                         </option>
                     @endforeach
                 </select>
             </div>
+
+            <!-- Выбор задач -->
+            <div class="mb-3">
+                <label for="tasks" class="form-label">Задачи</label>
+                <select class="form-select select2" id="tasks" name="tasks[]" multiple>
+                    @foreach($tasks as $task)
+                        <option value="{{ $task->id }}" {{ in_array($task->id, old('tasks', [])) ? 'selected' : '' }}>
+                            {{ $task->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
 
             <button type="submit" class="btn btn-primary">Создать проект</button>
         </form>
