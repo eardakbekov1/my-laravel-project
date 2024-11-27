@@ -9,25 +9,56 @@ use App\Models\Condition;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="Task API",
+ *     version="1.0.0",
+ *     description="API для работы с задачами"
+ * )
+ */
 class TaskController extends Controller
 {
     /**
-     * Получить список всех задач.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/tasks",
+     *     summary="Получить список всех задач",
+     *     tags={"Tasks"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешно получен список задач",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Task")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
-        $tasks = Task::with(['condition', 'status', 'user', 'projects'])->get(); // Загружаем связанные модели
-
+        $tasks = Task::with(['condition', 'status', 'user', 'projects'])->get();
         return response()->json($tasks);
     }
 
     /**
-     * Создать новую задачу.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/tasks",
+     *     summary="Создать новую задачу",
+     *     tags={"Tasks"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/TaskCreateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Задача успешно создана",
+     *         @OA\JsonContent(ref="#/components/schemas/Task")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Неверные данные",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -41,14 +72,12 @@ class TaskController extends Controller
             'projects.*' => 'exists:projects,id',
         ]);
 
-        $task = Task::create($validated); // Создаем задачу
+        $task = Task::create($validated);
 
-        // Привязываем проекты, если они есть
         if ($request->has('projects')) {
             $task->projects()->sync($validated['projects']);
         }
 
-        // Ожидаем, что событие будет обрабатываться, если нужно
         event(new \App\Events\TaskCreated($task));
 
         return response()->json([
@@ -58,24 +87,55 @@ class TaskController extends Controller
     }
 
     /**
-     * Показать информацию о задаче.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/tasks/{id}",
+     *     summary="Получить информацию о задаче",
+     *     tags={"Tasks"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешно получена информация о задаче",
+     *         @OA\JsonContent(ref="#/components/schemas/Task")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Задача не найдена",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function show($id)
     {
         $task = Task::with(['condition', 'status', 'user', 'projects'])->findOrFail($id);
-
         return response()->json($task);
     }
 
     /**
-     * Обновить задачу.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Put(
+     *     path="/api/tasks/{id}",
+     *     summary="Обновить задачу",
+     *     tags={"Tasks"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/TaskUpdateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Задача успешно обновлена",
+     *         @OA\JsonContent(ref="#/components/schemas/Task")
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -91,9 +151,8 @@ class TaskController extends Controller
             'projects.*' => 'exists:projects,id',
         ]);
 
-        $task->update($validated); // Обновление данных задачи
+        $task->update($validated);
 
-        // Обновляем проекты, связанные с задачей
         $task->projects()->sync($validated['projects'] ?? []);
 
         return response()->json([
@@ -103,10 +162,21 @@ class TaskController extends Controller
     }
 
     /**
-     * Удалить задачу.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Delete(
+     *     path="/api/tasks/{id}",
+     *     summary="Удалить задачу",
+     *     tags={"Tasks"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Задача успешно удалена"
+     *     )
+     * )
      */
     public function destroy($id)
     {
@@ -117,4 +187,32 @@ class TaskController extends Controller
             'message' => 'Задача успешно удалена!',
         ]);
     }
+
+    /**
+     * @OA\Schema(
+     *     schema="TaskCreateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название задачи"),
+     *     @OA\Property(property="description", type="string", description="Описание задачи"),
+     *     @OA\Property(property="status_id", type="integer", description="ID статуса задачи"),
+     *     @OA\Property(property="user_id", type="integer", description="ID пользователя, ответственного за задачу"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния задачи"),
+     *     @OA\Property(property="projects", type="array", items=@OA\Items(type="integer"), description="Список ID проектов")
+     * )
+     */
+
+    /**
+     * @OA\Schema(
+     *     schema="TaskUpdateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название задачи"),
+     *     @OA\Property(property="description", type="string", description="Описание задачи"),
+     *     @OA\Property(property="status_id", type="integer", description="ID статуса задачи"),
+     *     @OA\Property(property="user_id", type="integer", description="ID пользователя, ответственного за задачу"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния задачи"),
+     *     @OA\Property(property="projects", type="array", items=@OA\Items(type="integer"), description="Список ID проектов")
+     * )
+     */
 }

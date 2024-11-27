@@ -5,34 +5,64 @@ use App\Http\Controllers\Controller;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="Condition API",
+ *     version="1.0.0",
+ *     description="API для работы с состояниями ID-карт"
+ * )
+ */
 class ConditionController extends Controller
 {
     /**
-     * Показать список всех состояний.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/conditions",
+     *     summary="Показать список всех состояний",
+     *     tags={"Conditions"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Список всех состояний успешно получен",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Condition")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
-        $conditions = Condition::all(); // Получаем все состояния
+        $conditions = Condition::all();
         return response()->json($conditions);
     }
 
     /**
-     * Сохранить новое состояние.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/conditions",
+     *     summary="Сохранить новое состояние",
+     *     tags={"Conditions"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ConditionCreateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Состояние успешно создано",
+     *         @OA\JsonContent(ref="#/components/schemas/Condition")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Неверные данные",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function store(Request $request)
     {
-        // Валидация данных
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        // Создание состояния
         $condition = Condition::create($validated);
 
         return response()->json([
@@ -42,27 +72,58 @@ class ConditionController extends Controller
     }
 
     /**
-     * Показать информацию о состоянии.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/conditions/{id}",
+     *     summary="Показать информацию о состоянии",
+     *     tags={"Conditions"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Информация о состоянии получена",
+     *         @OA\JsonContent(ref="#/components/schemas/Condition")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Состояние не найдено",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function show($id)
     {
-        $condition = Condition::findOrFail($id); // Находим состояние по ID
+        $condition = Condition::findOrFail($id);
         return response()->json($condition);
     }
 
     /**
-     * Обновить состояние.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Put(
+     *     path="/api/conditions/{id}",
+     *     summary="Обновить состояние",
+     *     tags={"Conditions"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ConditionUpdateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Состояние успешно обновлено",
+     *         @OA\JsonContent(ref="#/components/schemas/Condition")
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
-        // Валидация данных
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -78,10 +139,21 @@ class ConditionController extends Controller
     }
 
     /**
-     * Удалить состояние.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Delete(
+     *     path="/api/conditions/{id}",
+     *     summary="Удалить состояние",
+     *     tags={"Conditions"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Состояние успешно удалено"
+     *     )
+     * )
      */
     public function destroy($id)
     {
@@ -92,4 +164,34 @@ class ConditionController extends Controller
             'message' => 'Состояние удалено успешно!',
         ]);
     }
+
+    /**
+     * @OA\Schema(
+     *     schema="ConditionCreateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название состояния"),
+     *     @OA\Property(property="description", type="string", description="Описание состояния")
+     * )
+     */
+
+    /**
+     * @OA\Schema(
+     *     schema="ConditionUpdateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название состояния"),
+     *     @OA\Property(property="description", type="string", description="Описание состояния")
+     * )
+     */
+
+    /**
+     * @OA\Schema(
+     *     schema="Condition",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", description="ID состояния"),
+     *     @OA\Property(property="name", type="string", description="Название состояния"),
+     *     @OA\Property(property="description", type="string", description="Описание состояния")
+     * )
+     */
 }

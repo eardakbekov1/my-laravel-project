@@ -6,12 +6,29 @@ use App\Models\Status;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="Status API",
+ *     version="1.0.0",
+ *     description="API для работы со статусами"
+ * )
+ */
 class StatusController extends Controller
 {
     /**
-     * Получить список всех статусов.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/statuses",
+     *     summary="Получить список всех статусов",
+     *     tags={"Statuses"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешно получен список статусов",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Status")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -20,10 +37,25 @@ class StatusController extends Controller
     }
 
     /**
-     * Создать новый статус.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/statuses",
+     *     summary="Создать новый статус",
+     *     tags={"Statuses"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/StatusCreateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Статус успешно создан",
+     *         @OA\JsonContent(ref="#/components/schemas/Status")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Неверные данные",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -42,10 +74,27 @@ class StatusController extends Controller
     }
 
     /**
-     * Показать конкретный статус.
-     *
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/statuses/{id}",
+     *     summary="Показать конкретный статус",
+     *     tags={"Statuses"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешно получен статус",
+     *         @OA\JsonContent(ref="#/components/schemas/Status")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Статус не найден",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function show(Status $status)
     {
@@ -54,11 +103,26 @@ class StatusController extends Controller
     }
 
     /**
-     * Обновить статус.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Put(
+     *     path="/api/statuses/{id}",
+     *     summary="Обновить статус",
+     *     tags={"Statuses"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/StatusUpdateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Статус успешно обновлен",
+     *         @OA\JsonContent(ref="#/components/schemas/Status")
+     *     )
+     * )
      */
     public function update(Request $request, Status $status)
     {
@@ -77,10 +141,21 @@ class StatusController extends Controller
     }
 
     /**
-     * Удалить статус.
-     *
-     * @param  \App\Models\Status  $status
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Delete(
+     *     path="/api/statuses/{id}",
+     *     summary="Удалить статус",
+     *     tags={"Statuses"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Статус успешно удален"
+     *     )
+     * )
      */
     public function destroy(Status $status)
     {
@@ -90,4 +165,38 @@ class StatusController extends Controller
             'message' => 'Статус удален успешно!',
         ]);
     }
+
+    /**
+     * @OA\Schema(
+     *     schema="StatusCreateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название статуса"),
+     *     @OA\Property(property="description", type="string", description="Описание статуса"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния")
+     * )
+     */
+
+    /**
+     * @OA\Schema(
+     *     schema="StatusUpdateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название статуса"),
+     *     @OA\Property(property="description", type="string", description="Описание статуса"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния")
+     * )
+     */
+
+    /**
+     * @OA\Schema(
+     *     schema="Status",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", description="ID статуса"),
+     *     @OA\Property(property="name", type="string", description="Название статуса"),
+     *     @OA\Property(property="description", type="string", description="Описание статуса"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния"),
+     *     @OA\Property(property="condition", ref="#/components/schemas/Condition")
+     * )
+     */
 }

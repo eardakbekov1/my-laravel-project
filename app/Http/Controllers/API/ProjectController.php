@@ -8,12 +8,29 @@ use App\Models\Status;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="Project API",
+ *     version="1.0.0",
+ *     description="API для работы с проектами"
+ * )
+ */
 class ProjectController extends Controller
 {
     /**
-     * Получить список всех проектов.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/projects",
+     *     summary="Получить список всех проектов",
+     *     tags={"Projects"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Список всех проектов успешно получен",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Project")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -22,10 +39,25 @@ class ProjectController extends Controller
     }
 
     /**
-     * Создать новый проект.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/projects",
+     *     summary="Создать новый проект",
+     *     tags={"Projects"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ProjectCreateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Проект успешно создан",
+     *         @OA\JsonContent(ref="#/components/schemas/Project")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Неверные данные",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -56,10 +88,27 @@ class ProjectController extends Controller
     }
 
     /**
-     * Получить данные о конкретном проекте.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *     path="/api/projects/{id}",
+     *     summary="Получить данные о конкретном проекте",
+     *     tags={"Projects"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Данные проекта успешно получены",
+     *         @OA\JsonContent(ref="#/components/schemas/Project")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Проект не найден",
+     *         @OA\JsonContent()
+     *     )
+     * )
      */
     public function show(Project $project)
     {
@@ -68,11 +117,26 @@ class ProjectController extends Controller
     }
 
     /**
-     * Обновить проект.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Put(
+     *     path="/api/projects/{id}",
+     *     summary="Обновить проект",
+     *     tags={"Projects"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ProjectUpdateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Проект успешно обновлен",
+     *         @OA\JsonContent(ref="#/components/schemas/Project")
+     *     )
+     * )
      */
     public function update(Request $request, Project $project)
     {
@@ -100,10 +164,21 @@ class ProjectController extends Controller
     }
 
     /**
-     * Удалить проект.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Delete(
+     *     path="/api/projects/{id}",
+     *     summary="Удалить проект",
+     *     tags={"Projects"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Проект успешно удален"
+     *     )
+     * )
      */
     public function destroy(Project $project)
     {
@@ -113,4 +188,51 @@ class ProjectController extends Controller
             'message' => 'Проект успешно удален!',
         ]);
     }
+
+    /**
+     * @OA\Schema(
+     *     schema="ProjectCreateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название проекта"),
+     *     @OA\Property(property="description", type="string", description="Описание проекта"),
+     *     @OA\Property(property="status_id", type="integer", description="ID статуса проекта"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния проекта"),
+     *     @OA\Property(property="tasks", type="array", description="Список задач",
+     *         @OA\Items(type="integer")
+     *     )
+     * )
+     */
+
+    /**
+     * @OA\Schema(
+     *     schema="ProjectUpdateRequest",
+     *     type="object",
+     *     required={"name"},
+     *     @OA\Property(property="name", type="string", description="Название проекта"),
+     *     @OA\Property(property="description", type="string", description="Описание проекта"),
+     *     @OA\Property(property="status_id", type="integer", description="ID статуса проекта"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния проекта"),
+     *     @OA\Property(property="tasks", type="array", description="Список задач",
+     *         @OA\Items(type="integer")
+     *     )
+     * )
+     */
+
+    /**
+     * @OA\Schema(
+     *     schema="Project",
+     *     type="object",
+     *     @OA\Property(property="id", type="integer", description="ID проекта"),
+     *     @OA\Property(property="name", type="string", description="Название проекта"),
+     *     @OA\Property(property="description", type="string", description="Описание проекта"),
+     *     @OA\Property(property="status_id", type="integer", description="ID статуса проекта"),
+     *     @OA\Property(property="condition_id", type="integer", description="ID состояния проекта"),
+     *     @OA\Property(property="tasks", type="array", description="Задачи проекта",
+     *         @OA\Items(ref="#/components/schemas/Task")
+     *     ),
+     *     @OA\Property(property="status", ref="#/components/schemas/Status"),
+     *     @OA\Property(property="condition", ref="#/components/schemas/Condition")
+     * )
+     */
 }
