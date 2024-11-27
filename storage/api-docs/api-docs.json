@@ -1,0 +1,2266 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Task Manager API",
+        "description": "API для работы с Task manager",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/conditions": {
+            "get": {
+                "tags": [
+                    "Conditions"
+                ],
+                "summary": "Показать список всех состояний",
+                "operationId": "09638716d191bde9894ca928ab790f99",
+                "responses": {
+                    "200": {
+                        "description": "Список всех состояний успешно получен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID состояния",
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "description": "Название состояния",
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "description": "Описание состояния",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Conditions"
+                ],
+                "summary": "Сохранить новое состояние",
+                "operationId": "b5d906e58a813f9ef76f2f80dbd700d9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Название состояния",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание состояния",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Состояние успешно создано",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID состояния",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название состояния",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание состояния",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/conditions/{id}": {
+            "get": {
+                "tags": [
+                    "Conditions"
+                ],
+                "summary": "Показать информацию о состоянии",
+                "operationId": "9cbc9227cd3a5aeef01c3a0cfd0a4d3d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Информация о состоянии получена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID состояния",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название состояния",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание состояния",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Состояние не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Conditions"
+                ],
+                "summary": "Обновить состояние",
+                "operationId": "99db39c69672797b066a8c88079a00a4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Название состояния",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание состояния",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Состояние успешно обновлено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID состояния",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название состояния",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание состояния",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Conditions"
+                ],
+                "summary": "Удалить состояние",
+                "operationId": "06b4facdb6aa0e29c58c1c1b50e98e5c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Состояние успешно удалено"
+                    }
+                }
+            }
+        },
+        "/api/id-cards": {
+            "get": {
+                "tags": [
+                    "IdCards"
+                ],
+                "summary": "Получить список всех ID-карт",
+                "operationId": "8b8730072c5b0d1d8ec30579e80ca7b3",
+                "responses": {
+                    "200": {
+                        "description": "Список всех ID-карт успешно получен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID ID-карты",
+                                                "type": "integer"
+                                            },
+                                            "user_id": {
+                                                "description": "ID пользователя, которому принадлежит ID-карта",
+                                                "type": "integer"
+                                            },
+                                            "card_number": {
+                                                "description": "Номер ID-карты",
+                                                "type": "string"
+                                            },
+                                            "issued_at": {
+                                                "description": "Дата выдачи ID-карты",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "expires_at": {
+                                                "description": "Дата окончания срока действия ID-карты",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "IdCards"
+                ],
+                "summary": "Создать новую ID-карту",
+                "operationId": "4a0f59af5226f5c4adc55b23cd645bd0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "role_id": {
+                                        "description": "ID роли",
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "description": "ID пользователя, которому принадлежит ID-карта",
+                                        "type": "integer"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния (необязательно)",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "ID-карта успешно создана",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID ID-карты",
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя",
+                                            "type": "integer"
+                                        },
+                                        "card_number": {
+                                            "description": "Номер ID-карты",
+                                            "type": "string"
+                                        },
+                                        "issued_at": {
+                                            "description": "Дата выдачи ID-карты",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "expires_at": {
+                                            "description": "Дата окончания срока действия ID-карты",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/id-cards/{id}": {
+            "get": {
+                "tags": [
+                    "IdCards"
+                ],
+                "summary": "Получить данные о конкретной ID-карте",
+                "operationId": "2a330ba1fa743b1ae183aeffd87fe177",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные ID-карты успешно получены",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID ID-карты",
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя",
+                                            "type": "integer"
+                                        },
+                                        "card_number": {
+                                            "description": "Номер ID-карты",
+                                            "type": "string"
+                                        },
+                                        "issued_at": {
+                                            "description": "Дата выдачи ID-карты",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "expires_at": {
+                                            "description": "Дата окончания срока действия ID-карты",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ID-карта не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "IdCards"
+                ],
+                "summary": "Обновить данные ID-карты",
+                "operationId": "0319d4dd908776ae98b868197cd3b17f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "role_id": {
+                                        "description": "ID роли",
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "description": "ID пользователя",
+                                        "type": "integer"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния (необязательно)",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ID-карта успешно обновлена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID ID-карты",
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя",
+                                            "type": "integer"
+                                        },
+                                        "card_number": {
+                                            "description": "Номер ID-карты",
+                                            "type": "string"
+                                        },
+                                        "issued_at": {
+                                            "description": "Дата выдачи ID-карты",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "expires_at": {
+                                            "description": "Дата окончания срока действия ID-карты",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "IdCards"
+                ],
+                "summary": "Удалить ID-карту",
+                "operationId": "8503226ec1c5b9e3a5d87d5df5ad555e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ID-карта успешно удалена"
+                    }
+                }
+            }
+        },
+        "/api/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Получить список всех проектов",
+                "operationId": "2ea4919d0a733012d5e30a9c60233aca",
+                "responses": {
+                    "200": {
+                        "description": "Список всех проектов успешно получен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID проекта",
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "description": "Название проекта",
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "description": "Описание проекта",
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "description": "Дата создания проекта",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "description": "Дата последнего обновления проекта",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Создать новый проект",
+                "operationId": "48ad9efff74ef8cbc32998fcb386e258",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название проекта",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание проекта",
+                                        "type": "string"
+                                    },
+                                    "status_id": {
+                                        "description": "ID статуса",
+                                        "type": "integer"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния",
+                                        "type": "integer"
+                                    },
+                                    "tasks": {
+                                        "description": "Список ID задач",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Проект успешно создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение о статусе",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Данные проекта",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projects/{id}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Получить данные о конкретном проекте",
+                "operationId": "33c3368c9b2408f1a656a8aadf0ffb1e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные проекта успешно получены",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID проекта",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название проекта",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание проекта",
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "description": "Статус проекта",
+                                            "type": "object"
+                                        },
+                                        "condition": {
+                                            "description": "Состояние проекта",
+                                            "type": "object"
+                                        },
+                                        "tasks": {
+                                            "description": "Задачи проекта",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Проект не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Обновить проект",
+                "operationId": "4e99159fd01220e5d1879aaa765489b4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название проекта",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание проекта",
+                                        "type": "string"
+                                    },
+                                    "status_id": {
+                                        "description": "ID статуса",
+                                        "type": "integer"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния",
+                                        "type": "integer"
+                                    },
+                                    "tasks": {
+                                        "description": "Список ID задач",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Проект успешно обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение о статусе",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "description": "Данные проекта",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Удалить проект",
+                "operationId": "9061d822d45e087b7bfd1a3a659c3ac2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Проект успешно удален"
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Получить список ролей",
+                "operationId": "6cd48af64dafcf1c85923dba47e841a4",
+                "responses": {
+                    "200": {
+                        "description": "Успешно получен список ролей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID роли",
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "description": "Название роли",
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "description": "Описание роли",
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "description": "Дата создания роли",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "description": "Дата последнего обновления роли",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Создать новую роль",
+                "operationId": "4eb1ce389f63b4dbfcc5b002014636e1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название роли",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание роли",
+                                        "type": "string"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния роли",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Роль успешно создана",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID роли",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название роли",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание роли",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания роли",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления роли",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "condition": {
+                                            "description": "Состояние роли",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID состояния",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Название состояния",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Показать конкретную роль",
+                "operationId": "d932a477623c1c931444dcc799f1eb0a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешно получена роль",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID роли",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название роли",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание роли",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания роли",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления роли",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "condition": {
+                                            "description": "Состояние роли",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID состояния",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Название состояния",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Роль не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Обновить роль",
+                "operationId": "e0fa8b9f9f9cfb6c7e51a7609dd35dcd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название роли",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание роли",
+                                        "type": "string"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния роли",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Роль успешно обновлена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID роли",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название роли",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание роли",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания роли",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления роли",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "condition": {
+                                            "description": "Состояние роли",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID состояния",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Название состояния",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Удалить роль",
+                "operationId": "a0c87b804be9d37055fc6f936cbacb1b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Роль успешно удалена"
+                    }
+                }
+            }
+        },
+        "/api/statuses": {
+            "get": {
+                "tags": [
+                    "Statuses"
+                ],
+                "summary": "Получить список всех статусов",
+                "operationId": "c5b6544699445c4374485174d2ddbd38",
+                "responses": {
+                    "200": {
+                        "description": "Успешно получен список статусов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID статуса",
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "description": "Название статуса",
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "description": "Описание статуса",
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "description": "Дата создания статуса",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "description": "Дата последнего обновления статуса",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "condition": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "ID состояния",
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "description": "Название состояния",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Statuses"
+                ],
+                "summary": "Создать новый статус",
+                "operationId": "9cd08dad76afea383b8ea130793905c7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название статуса",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание статуса",
+                                        "type": "string"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Статус успешно создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Сообщение об успешном создании статуса",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID статуса",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Название статуса",
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "description": "Описание статуса",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "description": "Дата создания статуса",
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "description": "Дата последнего обновления статуса",
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "condition": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "ID состояния",
+                                                            "type": "integer"
+                                                        },
+                                                        "name": {
+                                                            "description": "Название состояния",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/statuses/{id}": {
+            "get": {
+                "tags": [
+                    "Statuses"
+                ],
+                "summary": "Показать конкретный статус",
+                "operationId": "2ef3272db88fb6af3c53de5272fcbb25",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешно получен статус",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID статуса",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название статуса",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание статуса",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания статуса",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления статуса",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "condition": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID состояния",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Название состояния",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Статус не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Statuses"
+                ],
+                "summary": "Обновить статус",
+                "operationId": "2f1f091f8ed5dd36829b1fe575d5b9b0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название статуса",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание статуса",
+                                        "type": "string"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Статус успешно обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID статуса",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название статуса",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание статуса",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания статуса",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления статуса",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "condition": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "ID состояния",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Название состояния",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Statuses"
+                ],
+                "summary": "Удалить статус",
+                "operationId": "ee24e8f060dc206b17c654c17928b790",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Статус успешно удален"
+                    }
+                }
+            }
+        },
+        "/api/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Получить список всех задач",
+                "operationId": "c641d93887fb50d557f18a7d11d0fd70",
+                "responses": {
+                    "200": {
+                        "description": "Успешно получен список задач",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID задачи",
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "description": "Название задачи",
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "description": "Описание задачи",
+                                                "type": "string"
+                                            },
+                                            "status_id": {
+                                                "description": "ID статуса задачи",
+                                                "type": "integer"
+                                            },
+                                            "user_id": {
+                                                "description": "ID пользователя, назначенного на задачу",
+                                                "type": "integer"
+                                            },
+                                            "condition_id": {
+                                                "description": "ID состояния задачи",
+                                                "type": "integer"
+                                            },
+                                            "created_at": {
+                                                "description": "Дата создания задачи",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "description": "Дата последнего обновления задачи",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Создать новую задачу",
+                "operationId": "53feb2a5084021acb62923cf3cd7a873",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название задачи",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание задачи",
+                                        "type": "string"
+                                    },
+                                    "status_id": {
+                                        "description": "ID статуса задачи",
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "description": "ID пользователя, назначенного на задачу",
+                                        "type": "integer"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния задачи",
+                                        "type": "integer"
+                                    },
+                                    "projects": {
+                                        "description": "Список ID проектов",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Задача успешно создана",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID задачи",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название задачи",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание задачи",
+                                            "type": "string"
+                                        },
+                                        "status_id": {
+                                            "description": "ID статуса задачи",
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя, назначенного на задачу",
+                                            "type": "integer"
+                                        },
+                                        "condition_id": {
+                                            "description": "ID состояния задачи",
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания задачи",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления задачи",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tasks/{id}": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Получить информацию о задаче",
+                "operationId": "23615b21f3984fd9361306821c838ad0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешно получена информация о задаче",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID задачи",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название задачи",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание задачи",
+                                            "type": "string"
+                                        },
+                                        "status_id": {
+                                            "description": "ID статуса задачи",
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя, назначенного на задачу",
+                                            "type": "integer"
+                                        },
+                                        "condition_id": {
+                                            "description": "ID состояния задачи",
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания задачи",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления задачи",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Задача не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Обновить задачу",
+                "operationId": "18e64b4b16cbee264fa84b775e6b7a91",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Название задачи",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Описание задачи",
+                                        "type": "string"
+                                    },
+                                    "status_id": {
+                                        "description": "ID статуса задачи",
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "description": "ID пользователя, назначенного на задачу",
+                                        "type": "integer"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния задачи",
+                                        "type": "integer"
+                                    },
+                                    "projects": {
+                                        "description": "Список ID проектов",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Задача успешно обновлена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID задачи",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Название задачи",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Описание задачи",
+                                            "type": "string"
+                                        },
+                                        "status_id": {
+                                            "description": "ID статуса задачи",
+                                            "type": "integer"
+                                        },
+                                        "user_id": {
+                                            "description": "ID пользователя, назначенного на задачу",
+                                            "type": "integer"
+                                        },
+                                        "condition_id": {
+                                            "description": "ID состояния задачи",
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания задачи",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления задачи",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Задача не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Удалить задачу",
+                "operationId": "2c379aab1f7cf16dbf084cee9978de75",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Задача успешно удалена",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Задача не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Получить список всех пользователей",
+                "operationId": "d7a57f4d7de18fb0f92501172472c9b6",
+                "responses": {
+                    "200": {
+                        "description": "Успешно получен список пользователей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "ID пользователя",
+                                                "type": "integer"
+                                            },
+                                            "first_name": {
+                                                "description": "Имя пользователя",
+                                                "type": "string"
+                                            },
+                                            "last_name": {
+                                                "description": "Фамилия пользователя",
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "description": "Имя пользователя для входа",
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "description": "Электронная почта пользователя",
+                                                "type": "string"
+                                            },
+                                            "condition_id": {
+                                                "description": "ID состояния пользователя",
+                                                "type": "integer"
+                                            },
+                                            "created_at": {
+                                                "description": "Дата создания пользователя",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "description": "Дата последнего обновления пользователя",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Создать нового пользователя",
+                "operationId": "9fea6f2adcb69614c521a7733358382d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "description": "Имя пользователя",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "Фамилия пользователя",
+                                        "type": "string"
+                                    },
+                                    "username": {
+                                        "description": "Имя пользователя для входа",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Электронная почта пользователя",
+                                        "type": "string"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния пользователя",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Пользователь успешно создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID пользователя",
+                                            "type": "integer"
+                                        },
+                                        "first_name": {
+                                            "description": "Имя пользователя",
+                                            "type": "string"
+                                        },
+                                        "last_name": {
+                                            "description": "Фамилия пользователя",
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "description": "Имя пользователя для входа",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Электронная почта пользователя",
+                                            "type": "string"
+                                        },
+                                        "condition_id": {
+                                            "description": "ID состояния пользователя",
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания пользователя",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления пользователя",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Неверные данные",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Получить информацию о пользователе",
+                "operationId": "40a5104e23b52137e78c3d3ac48b88a8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешно получена информация о пользователе",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID пользователя",
+                                            "type": "integer"
+                                        },
+                                        "first_name": {
+                                            "description": "Имя пользователя",
+                                            "type": "string"
+                                        },
+                                        "last_name": {
+                                            "description": "Фамилия пользователя",
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "description": "Имя пользователя для входа",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Электронная почта пользователя",
+                                            "type": "string"
+                                        },
+                                        "condition_id": {
+                                            "description": "ID состояния пользователя",
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания пользователя",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления пользователя",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Пользователь не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Обновить данные пользователя",
+                "operationId": "b166772cec9714067040e77cf14beeba",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "description": "Имя пользователя",
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "description": "Фамилия пользователя",
+                                        "type": "string"
+                                    },
+                                    "username": {
+                                        "description": "Имя пользователя для входа",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Электронная почта пользователя",
+                                        "type": "string"
+                                    },
+                                    "condition_id": {
+                                        "description": "ID состояния пользователя",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Пользователь успешно обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID пользователя",
+                                            "type": "integer"
+                                        },
+                                        "first_name": {
+                                            "description": "Имя пользователя",
+                                            "type": "string"
+                                        },
+                                        "last_name": {
+                                            "description": "Фамилия пользователя",
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "description": "Имя пользователя для входа",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Электронная почта пользователя",
+                                            "type": "string"
+                                        },
+                                        "condition_id": {
+                                            "description": "ID состояния пользователя",
+                                            "type": "integer"
+                                        },
+                                        "created_at": {
+                                            "description": "Дата создания пользователя",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "description": "Дата последнего обновления пользователя",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Удалить пользователя",
+                "operationId": "ce06860a51ab016ef66e753544fe4563",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователь успешно удален"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Conditions",
+            "description": "Conditions"
+        },
+        {
+            "name": "IdCards",
+            "description": "IdCards"
+        },
+        {
+            "name": "Projects",
+            "description": "Projects"
+        },
+        {
+            "name": "Roles",
+            "description": "Roles"
+        },
+        {
+            "name": "Statuses",
+            "description": "Statuses"
+        },
+        {
+            "name": "Tasks",
+            "description": "Tasks"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        }
+    ]
+}

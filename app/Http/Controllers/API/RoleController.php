@@ -6,13 +6,6 @@ use App\Models\Role;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
-/**
- * @OA\Info(
- *     title="Role API",
- *     version="1.0.0",
- *     description="API для работы с ролями"
- * )
- */
 class RoleController extends Controller
 {
     /**
@@ -25,7 +18,14 @@ class RoleController extends Controller
      *         description="Успешно получен список ролей",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Role")
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID роли"),
+     *                 @OA\Property(property="name", type="string", description="Название роли"),
+     *                 @OA\Property(property="description", type="string", description="Описание роли"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания роли"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления роли")
+     *             )
      *         )
      *     )
      * )
@@ -43,12 +43,27 @@ class RoleController extends Controller
      *     tags={"Roles"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/RoleCreateRequest")
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", description="Название роли"),
+     *             @OA\Property(property="description", type="string", description="Описание роли"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния роли")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Роль успешно создана",
-     *         @OA\JsonContent(ref="#/components/schemas/Role")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID роли"),
+     *             @OA\Property(property="name", type="string", description="Название роли"),
+     *             @OA\Property(property="description", type="string", description="Описание роли"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания роли"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления роли"),
+     *             @OA\Property(property="condition", type="object", description="Состояние роли",
+     *                 @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                 @OA\Property(property="name", type="string", description="Название состояния")
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -87,7 +102,18 @@ class RoleController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Успешно получена роль",
-     *         @OA\JsonContent(ref="#/components/schemas/Role")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID роли"),
+     *             @OA\Property(property="name", type="string", description="Название роли"),
+     *             @OA\Property(property="description", type="string", description="Описание роли"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания роли"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления роли"),
+     *             @OA\Property(property="condition", type="object", description="Состояние роли",
+     *                 @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                 @OA\Property(property="name", type="string", description="Название состояния")
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -115,12 +141,27 @@ class RoleController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/RoleUpdateRequest")
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", description="Название роли"),
+     *             @OA\Property(property="description", type="string", description="Описание роли"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния роли")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Роль успешно обновлена",
-     *         @OA\JsonContent(ref="#/components/schemas/Role")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID роли"),
+     *             @OA\Property(property="name", type="string", description="Название роли"),
+     *             @OA\Property(property="description", type="string", description="Описание роли"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания роли"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления роли"),
+     *             @OA\Property(property="condition", type="object", description="Состояние роли",
+     *                 @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                 @OA\Property(property="name", type="string", description="Название состояния")
+     *             )
+     *         )
      *     )
      * )
      */
@@ -165,38 +206,4 @@ class RoleController extends Controller
             'message' => 'Роль успешно удалена!',
         ]);
     }
-
-    /**
-     * @OA\Schema(
-     *     schema="RoleCreateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название роли"),
-     *     @OA\Property(property="description", type="string", description="Описание роли"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="RoleUpdateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название роли"),
-     *     @OA\Property(property="description", type="string", description="Описание роли"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="Role",
-     *     type="object",
-     *     @OA\Property(property="id", type="integer", description="ID роли"),
-     *     @OA\Property(property="name", type="string", description="Название роли"),
-     *     @OA\Property(property="description", type="string", description="Описание роли"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния"),
-     *     @OA\Property(property="condition", ref="#/components/schemas/Condition")
-     * )
-     */
 }

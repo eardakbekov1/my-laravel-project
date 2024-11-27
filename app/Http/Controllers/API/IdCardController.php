@@ -1,20 +1,11 @@
 <?php
+
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\IdCard;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Condition;
 use Illuminate\Http\Request;
 
-/**
- * @OA\Info(
- *     title="ID Card API",
- *     version="1.0.0",
- *     description="API для работы с ID-картами"
- * )
- */
 class IdCardController extends Controller
 {
     /**
@@ -27,7 +18,14 @@ class IdCardController extends Controller
      *         description="Список всех ID-карт успешно получен",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/IdCard")
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID ID-карты"),
+     *                 @OA\Property(property="user_id", type="integer", description="ID пользователя, которому принадлежит ID-карта"),
+     *                 @OA\Property(property="card_number", type="string", description="Номер ID-карты"),
+     *                 @OA\Property(property="issued_at", type="string", format="date-time", description="Дата выдачи ID-карты"),
+     *                 @OA\Property(property="expires_at", type="string", format="date-time", description="Дата окончания срока действия ID-карты")
+     *             )
      *         )
      *     )
      * )
@@ -45,12 +43,24 @@ class IdCardController extends Controller
      *     tags={"IdCards"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/IdCardCreateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="role_id", type="integer", description="ID роли"),
+     *             @OA\Property(property="user_id", type="integer", description="ID пользователя, которому принадлежит ID-карта"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния (необязательно)")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="ID-карта успешно создана",
-     *         @OA\JsonContent(ref="#/components/schemas/IdCard")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID ID-карты"),
+     *             @OA\Property(property="user_id", type="integer", description="ID пользователя"),
+     *             @OA\Property(property="card_number", type="string", description="Номер ID-карты"),
+     *             @OA\Property(property="issued_at", type="string", format="date-time", description="Дата выдачи ID-карты"),
+     *             @OA\Property(property="expires_at", type="string", format="date-time", description="Дата окончания срока действия ID-карты")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -89,7 +99,14 @@ class IdCardController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Данные ID-карты успешно получены",
-     *         @OA\JsonContent(ref="#/components/schemas/IdCard")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID ID-карты"),
+     *             @OA\Property(property="user_id", type="integer", description="ID пользователя"),
+     *             @OA\Property(property="card_number", type="string", description="Номер ID-карты"),
+     *             @OA\Property(property="issued_at", type="string", format="date-time", description="Дата выдачи ID-карты"),
+     *             @OA\Property(property="expires_at", type="string", format="date-time", description="Дата окончания срока действия ID-карты")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -117,12 +134,24 @@ class IdCardController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/IdCardUpdateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="role_id", type="integer", description="ID роли"),
+     *             @OA\Property(property="user_id", type="integer", description="ID пользователя"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния (необязательно)")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="ID-карта успешно обновлена",
-     *         @OA\JsonContent(ref="#/components/schemas/IdCard")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID ID-карты"),
+     *             @OA\Property(property="user_id", type="integer", description="ID пользователя"),
+     *             @OA\Property(property="card_number", type="string", description="Номер ID-карты"),
+     *             @OA\Property(property="issued_at", type="string", format="date-time", description="Дата выдачи ID-карты"),
+     *             @OA\Property(property="expires_at", type="string", format="date-time", description="Дата окончания срока действия ID-карты")
+     *         )
      *     )
      * )
      */
@@ -167,40 +196,4 @@ class IdCardController extends Controller
             'message' => 'ID-карта успешно удалена!',
         ]);
     }
-
-    /**
-     * @OA\Schema(
-     *     schema="IdCardCreateRequest",
-     *     type="object",
-     *     required={"role_id", "user_id"},
-     *     @OA\Property(property="role_id", type="integer", description="ID роли"),
-     *     @OA\Property(property="user_id", type="integer", description="ID пользователя"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния ID-карты")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="IdCardUpdateRequest",
-     *     type="object",
-     *     required={"role_id", "user_id"},
-     *     @OA\Property(property="role_id", type="integer", description="ID роли"),
-     *     @OA\Property(property="user_id", type="integer", description="ID пользователя"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния ID-карты")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="IdCard",
-     *     type="object",
-     *     @OA\Property(property="id", type="integer", description="ID ID-карты"),
-     *     @OA\Property(property="role_id", type="integer", description="ID роли"),
-     *     @OA\Property(property="user_id", type="integer", description="ID пользователя"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния ID-карты"),
-     *     @OA\Property(property="role", ref="#/components/schemas/Role"),
-     *     @OA\Property(property="user", ref="#/components/schemas/User"),
-     *     @OA\Property(property="condition", ref="#/components/schemas/Condition")
-     * )
-     */
 }

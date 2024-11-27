@@ -5,13 +5,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
-/**
- * @OA\Info(
- *     title="Condition API",
- *     version="1.0.0",
- *     description="API для работы с состояниями ID-карт"
- * )
- */
 class ConditionController extends Controller
 {
     /**
@@ -24,7 +17,12 @@ class ConditionController extends Controller
      *         description="Список всех состояний успешно получен",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Condition")
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                 @OA\Property(property="name", type="string", description="Название состояния"),
+     *                 @OA\Property(property="description", type="string", description="Описание состояния")
+     *             )
      *         )
      *     )
      * )
@@ -42,12 +40,22 @@ class ConditionController extends Controller
      *     tags={"Conditions"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ConditionCreateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", description="Название состояния"),
+     *             @OA\Property(property="description", type="string", description="Описание состояния")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Состояние успешно создано",
-     *         @OA\JsonContent(ref="#/components/schemas/Condition")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID состояния"),
+     *             @OA\Property(property="name", type="string", description="Название состояния"),
+     *             @OA\Property(property="description", type="string", description="Описание состояния")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -85,7 +93,12 @@ class ConditionController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Информация о состоянии получена",
-     *         @OA\JsonContent(ref="#/components/schemas/Condition")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID состояния"),
+     *             @OA\Property(property="name", type="string", description="Название состояния"),
+     *             @OA\Property(property="description", type="string", description="Описание состояния")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -113,12 +126,22 @@ class ConditionController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ConditionUpdateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", description="Название состояния"),
+     *             @OA\Property(property="description", type="string", description="Описание состояния")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Состояние успешно обновлено",
-     *         @OA\JsonContent(ref="#/components/schemas/Condition")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID состояния"),
+     *             @OA\Property(property="name", type="string", description="Название состояния"),
+     *             @OA\Property(property="description", type="string", description="Описание состояния")
+     *         )
      *     )
      * )
      */
@@ -164,34 +187,4 @@ class ConditionController extends Controller
             'message' => 'Состояние удалено успешно!',
         ]);
     }
-
-    /**
-     * @OA\Schema(
-     *     schema="ConditionCreateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название состояния"),
-     *     @OA\Property(property="description", type="string", description="Описание состояния")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="ConditionUpdateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название состояния"),
-     *     @OA\Property(property="description", type="string", description="Описание состояния")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="Condition",
-     *     type="object",
-     *     @OA\Property(property="id", type="integer", description="ID состояния"),
-     *     @OA\Property(property="name", type="string", description="Название состояния"),
-     *     @OA\Property(property="description", type="string", description="Описание состояния")
-     * )
-     */
 }

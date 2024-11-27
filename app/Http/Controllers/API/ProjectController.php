@@ -8,13 +8,6 @@ use App\Models\Status;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
-/**
- * @OA\Info(
- *     title="Project API",
- *     version="1.0.0",
- *     description="API для работы с проектами"
- * )
- */
 class ProjectController extends Controller
 {
     /**
@@ -27,7 +20,14 @@ class ProjectController extends Controller
      *         description="Список всех проектов успешно получен",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Project")
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID проекта"),
+     *                 @OA\Property(property="name", type="string", description="Название проекта"),
+     *                 @OA\Property(property="description", type="string", description="Описание проекта"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания проекта"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления проекта")
+     *             )
      *         )
      *     )
      * )
@@ -45,12 +45,23 @@ class ProjectController extends Controller
      *     tags={"Projects"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ProjectCreateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", description="Название проекта"),
+     *             @OA\Property(property="description", type="string", description="Описание проекта"),
+     *             @OA\Property(property="status_id", type="integer", description="ID статуса"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния"),
+     *             @OA\Property(property="tasks", type="array", @OA\Items(type="integer"), description="Список ID задач")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Проект успешно создан",
-     *         @OA\JsonContent(ref="#/components/schemas/Project")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", description="Сообщение о статусе"),
+     *             @OA\Property(property="data", type="object", description="Данные проекта")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -101,7 +112,15 @@ class ProjectController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Данные проекта успешно получены",
-     *         @OA\JsonContent(ref="#/components/schemas/Project")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID проекта"),
+     *             @OA\Property(property="name", type="string", description="Название проекта"),
+     *             @OA\Property(property="description", type="string", description="Описание проекта"),
+     *             @OA\Property(property="status", type="object", description="Статус проекта"),
+     *             @OA\Property(property="condition", type="object", description="Состояние проекта"),
+     *             @OA\Property(property="tasks", type="array", @OA\Items(type="object"), description="Задачи проекта")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -129,12 +148,23 @@ class ProjectController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/ProjectUpdateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", description="Название проекта"),
+     *             @OA\Property(property="description", type="string", description="Описание проекта"),
+     *             @OA\Property(property="status_id", type="integer", description="ID статуса"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния"),
+     *             @OA\Property(property="tasks", type="array", @OA\Items(type="integer"), description="Список ID задач")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Проект успешно обновлен",
-     *         @OA\JsonContent(ref="#/components/schemas/Project")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", description="Сообщение о статусе"),
+     *             @OA\Property(property="data", type="object", description="Данные проекта")
+     *         )
      *     )
      * )
      */
@@ -188,51 +218,4 @@ class ProjectController extends Controller
             'message' => 'Проект успешно удален!',
         ]);
     }
-
-    /**
-     * @OA\Schema(
-     *     schema="ProjectCreateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название проекта"),
-     *     @OA\Property(property="description", type="string", description="Описание проекта"),
-     *     @OA\Property(property="status_id", type="integer", description="ID статуса проекта"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния проекта"),
-     *     @OA\Property(property="tasks", type="array", description="Список задач",
-     *         @OA\Items(type="integer")
-     *     )
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="ProjectUpdateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название проекта"),
-     *     @OA\Property(property="description", type="string", description="Описание проекта"),
-     *     @OA\Property(property="status_id", type="integer", description="ID статуса проекта"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния проекта"),
-     *     @OA\Property(property="tasks", type="array", description="Список задач",
-     *         @OA\Items(type="integer")
-     *     )
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="Project",
-     *     type="object",
-     *     @OA\Property(property="id", type="integer", description="ID проекта"),
-     *     @OA\Property(property="name", type="string", description="Название проекта"),
-     *     @OA\Property(property="description", type="string", description="Описание проекта"),
-     *     @OA\Property(property="status_id", type="integer", description="ID статуса проекта"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния проекта"),
-     *     @OA\Property(property="tasks", type="array", description="Задачи проекта",
-     *         @OA\Items(ref="#/components/schemas/Task")
-     *     ),
-     *     @OA\Property(property="status", ref="#/components/schemas/Status"),
-     *     @OA\Property(property="condition", ref="#/components/schemas/Condition")
-     * )
-     */
 }

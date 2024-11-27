@@ -6,13 +6,6 @@ use App\Models\Status;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
-/**
- * @OA\Info(
- *     title="Status API",
- *     version="1.0.0",
- *     description="API для работы со статусами"
- * )
- */
 class StatusController extends Controller
 {
     /**
@@ -25,14 +18,25 @@ class StatusController extends Controller
      *         description="Успешно получен список статусов",
      *         @OA\JsonContent(
      *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Status")
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID статуса"),
+     *                 @OA\Property(property="name", type="string", description="Название статуса"),
+     *                 @OA\Property(property="description", type="string", description="Описание статуса"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания статуса"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления статуса"),
+     *                 @OA\Property(property="condition", type="object",
+     *                     @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                     @OA\Property(property="name", type="string", description="Название состояния")
+     *                 )
+     *             )
      *         )
      *     )
      * )
      */
     public function index()
     {
-        $statuses = Status::with('condition')->get(); // Получаем статусы с их состояниями
+        $statuses = Status::with('condition')->get();
         return response()->json($statuses);
     }
 
@@ -43,12 +47,31 @@ class StatusController extends Controller
      *     tags={"Statuses"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/StatusCreateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", description="Название статуса"),
+     *             @OA\Property(property="description", type="string", description="Описание статуса"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Статус успешно создан",
-     *         @OA\JsonContent(ref="#/components/schemas/Status")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", description="Сообщение об успешном создании статуса"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID статуса"),
+     *                 @OA\Property(property="name", type="string", description="Название статуса"),
+     *                 @OA\Property(property="description", type="string", description="Описание статуса"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания статуса"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления статуса"),
+     *                 @OA\Property(property="condition", type="object",
+     *                     @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                     @OA\Property(property="name", type="string", description="Название состояния")
+     *                 )
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -87,7 +110,18 @@ class StatusController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Успешно получен статус",
-     *         @OA\JsonContent(ref="#/components/schemas/Status")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID статуса"),
+     *             @OA\Property(property="name", type="string", description="Название статуса"),
+     *             @OA\Property(property="description", type="string", description="Описание статуса"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания статуса"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления статуса"),
+     *             @OA\Property(property="condition", type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                 @OA\Property(property="name", type="string", description="Название состояния")
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -98,7 +132,7 @@ class StatusController extends Controller
      */
     public function show(Status $status)
     {
-        $status->load('condition'); // Подгружаем состояние
+        $status->load('condition');
         return response()->json($status);
     }
 
@@ -115,12 +149,28 @@ class StatusController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/StatusUpdateRequest")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="name", type="string", description="Название статуса"),
+     *             @OA\Property(property="description", type="string", description="Описание статуса"),
+     *             @OA\Property(property="condition_id", type="integer", description="ID состояния")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Статус успешно обновлен",
-     *         @OA\JsonContent(ref="#/components/schemas/Status")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID статуса"),
+     *             @OA\Property(property="name", type="string", description="Название статуса"),
+     *             @OA\Property(property="description", type="string", description="Описание статуса"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", description="Дата создания статуса"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", description="Дата последнего обновления статуса"),
+     *             @OA\Property(property="condition", type="object",
+     *                 @OA\Property(property="id", type="integer", description="ID состояния"),
+     *                 @OA\Property(property="name", type="string", description="Название состояния")
+     *             )
+     *         )
      *     )
      * )
      */
@@ -165,38 +215,4 @@ class StatusController extends Controller
             'message' => 'Статус удален успешно!',
         ]);
     }
-
-    /**
-     * @OA\Schema(
-     *     schema="StatusCreateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название статуса"),
-     *     @OA\Property(property="description", type="string", description="Описание статуса"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="StatusUpdateRequest",
-     *     type="object",
-     *     required={"name"},
-     *     @OA\Property(property="name", type="string", description="Название статуса"),
-     *     @OA\Property(property="description", type="string", description="Описание статуса"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния")
-     * )
-     */
-
-    /**
-     * @OA\Schema(
-     *     schema="Status",
-     *     type="object",
-     *     @OA\Property(property="id", type="integer", description="ID статуса"),
-     *     @OA\Property(property="name", type="string", description="Название статуса"),
-     *     @OA\Property(property="description", type="string", description="Описание статуса"),
-     *     @OA\Property(property="condition_id", type="integer", description="ID состояния"),
-     *     @OA\Property(property="condition", ref="#/components/schemas/Condition")
-     * )
-     */
 }
