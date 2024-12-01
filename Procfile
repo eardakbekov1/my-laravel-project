@@ -1,1 +1,1 @@
-web: heroku-php-nginx resources/views/
+web: heroku-php-nginx public/
