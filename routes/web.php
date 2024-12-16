@@ -9,6 +9,7 @@ use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\IdCardController;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\ChatController;
 
 
 /*
@@ -37,11 +38,13 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
-Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
-Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage']);
-
 Route::post('/log-event', function (Illuminate\Http\Request $request) {
     Log::info('TaskCreated Event Data:', $request->all()); // Записываем данные в лог
     return response()->json(['status' => 'success']);
+});
+
+Route::controller(ChatController::class)->group(function () {
+    Route::get('/chat', 'index');
+    Route::get('/messages', 'messages');
+    Route::post('/send', 'send');
 });

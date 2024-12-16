@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Events\TaskUpdated;
 use App\Models\Project;
 use App\Events\TaskCreated;
+use App\Events\NewMessageSent;
 
 class TaskController extends Controller
 {

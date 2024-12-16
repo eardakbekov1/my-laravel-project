@@ -24,6 +24,6 @@ class ChatChannel
      */
     public function join(User $user)
     {
-        return auth()->check(); // Настройте доступ для ваших пользователей
+        return auth()->check();
     }
 }
