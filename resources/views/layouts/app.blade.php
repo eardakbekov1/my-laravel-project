@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <!-- Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
 <div id="app">
@@ -53,26 +55,21 @@
 
 @yield('scripts')
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+
 <script>
     $(document).ready(function() {
         // Инициализация Select2 с возможностью ввода текста
         $('.select2').select2({
-            tags: true,  // Позволяет вводить текст
-            placeholder: "Выберите", // Подсказка
+            placeholder: "Введите для поиска...",  // Подсказка
             allowClear: true  // Возможность очистить выбор
         });
     });
-</script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://js.pusher.com/3.1/pusher.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Подключаем Pusher и Toastr -->
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
-
-<script>
     // Инициализация Pusher
     Pusher.logToConsole = true; // Для отладки (отключите на продакшене)
     const pusher = new Pusher('f3383d676bc9750173a4', {
@@ -99,28 +96,6 @@
         );
     });
 </script>
-
-{{--<!-- Toastr JS -->--}}
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>--}}
-
-{{--<script type="text/javascript">--}}
-{{--    var pusher = new Pusher('f3383d676bc9750173a4', {--}}
-{{--        cluster: 'eu',--}}
-{{--        encrypted: true--}}
-{{--    });--}}
-
-{{--    var channel = pusher.subscribe('status-liked');--}}
-
-{{--    channel.bind('App\\Events\\StatusLiked', function(data) {--}}
-{{--        // Отображаем уведомление с помощью Toastr--}}
-{{--        toastr.info(data.message, 'Новое уведомление', {--}}
-{{--            "positionClass": "toast-top-right", // Позиция уведомления--}}
-{{--            "closeButton": true, // Кнопка закрытия--}}
-{{--            "timeOut": 5000, // Время отображения--}}
-{{--            "extendedTimeOut": 1000, // Время, через которое скрывается уведомление после взаимодействия--}}
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
 
 </body>
 </html>
