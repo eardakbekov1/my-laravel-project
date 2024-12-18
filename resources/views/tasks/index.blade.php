@@ -65,13 +65,4 @@
         @endforeach
         </tbody>
     </table>
-    <div>
-        <button id="toastrButton" class="btn btn-primary">Проверить Toastr</button>
-    </div>
-
-    <script>
-        document.getElementById('toastrButton').addEventListener('click', function() {
-            toastr.success('"Toastr" работает.', 'Успех!');
-        });
-    </script>
 @endsection

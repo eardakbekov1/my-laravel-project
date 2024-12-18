@@ -10,6 +10,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\IdCardController;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\ChatController;
+use App\Events\StatusLiked;
 
 
 /*
@@ -43,8 +44,15 @@ Route::post('/log-event', function (Illuminate\Http\Request $request) {
     return response()->json(['status' => 'success']);
 });
 
-Route::controller(ChatController::class)->group(function () {
-    Route::get('/chat', 'index');
-    Route::get('/messages', 'messages');
-    Route::post('/send', 'send');
+Route::get('test', function () {
+    return view('test');
+});
+
+Route::post('send-event', function () {
+    event(new StatusLiked('uuserov'));
+    return response()->json(['message' => 'Событие отправлено']);
+})->name('send.event');
+
+Route::get('/notify', function () {
+    return view('notify');
 });

@@ -1,38 +1,45 @@
 <?php
-// app/Events/TaskCreated.php
+
 namespace App\Events;
 
-use App\Models\Task;  // Импортируем модель Task
+use App\Models\Task;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TaskCreated implements ShouldBroadcast
+class TaskCreated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $task;  // Переменная для передачи данных задачи
+    public $task;
 
-    // Конструктор принимает задачу как параметр
     public function __construct(Task $task)
     {
         $this->task = $task;
     }
 
-    // Определяем, на какой канал будет транслироваться событие
     public function broadcastOn()
     {
-        return new Channel('tasks');  // Канал "tasks"
+        return new Channel('tasks');
     }
 
-    // Определяем, какие данные будут отправляться через событие
+    public function broadcastAs()
+    {
+        return 'task.created';
+    }
+
     public function broadcastWith()
     {
         return [
-            'task' => $this->task->toArray(),  // Преобразуем задачу в массив для передачи данных
+            'id' => $this->task->id,
+            'name' => $this->task->name,
+            'description' => $this->task->description,
+            'created_at' => $this->task->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }

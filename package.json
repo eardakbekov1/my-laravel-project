@@ -20,12 +20,14 @@
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.11",
         "sass-loader": "^11.0.1",
-        "tailwindcss": "^3.4.15"
+        "tailwindcss": "^3.4.15",
+        "vue-loader": "^17.4.2"
     },
     "dependencies": {
         "laravel-echo": "^1.17.0",
         "pusher-js": "^8.4.0-rc2",
         "toastr": "^2.1.4",
-        "vue": "^3.5.13"
+        "vue": "^3.5.13",
+        "webpack": "^5.97.1"
     }
 }
